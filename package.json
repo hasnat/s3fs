@@ -43,5 +43,5 @@
     "test": "mocha --check-leaks --recursive --timeout=25000 test",
     "test-ci": "npm run lint && npm run security && npm run cover"
   },
-  "version": "2.5.2"
+  "version": "2.5.3"
 }
