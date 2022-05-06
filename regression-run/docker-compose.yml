@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+
+  fake-s3:
+    container_name: fake-s3
+    build: fake-s3
+    environment:
+      - SERVICES=s3
+      - PORT_WEB_UI=8080
+      - HOST_TMP_FOLDER=/tmp/localstack
+    tmpfs:
+      - /tmp/localstack:exec,mode=600
+
+  s3fs-tests:
+    build:
+      context: ../
+      dockerfile: ./regression-run/Dockerfile
+    depends_on:
+      - fake-s3
+    environment:
+      AWS_ACCESS_KEY_ID: 'access-key-dont-matter-for-fake-s3'
+      AWS_SECRET_KEY: 'secret-key-dont-matter-for-fake-s3'
+      AWS_ENDPOINT: 'http://fake-s3:4572'
