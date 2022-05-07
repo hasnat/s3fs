@@ -34,9 +34,6 @@
             s3fsImpl;
 
         before(function () {
-            if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_KEY) {
-                throw new Error('Both an AWS Access Key ID and Secret Key are required');
-            }
             bucketName = 's3fs-file-test-bucket-' + (Math.random() + '').slice(2, 8);
             s3fsImpl = new S3FS(bucketName, s3Credentials);
 
@@ -45,19 +42,6 @@
 
         beforeEach(function () {
             bucketS3fsImpl = s3fsImpl.clone('testDir-' + (Math.random() + '').slice(2, 8));
-        });
-
-        after(function (done) {
-            s3fsImpl.destroy().then(function () {
-                done();
-            }, function (reason) {
-                if (reason.code === 'NoSuchBucket') {
-                    // If the bucket doesn't exist during cleanup we don't need to consider it an issue
-                    done();
-                } else {
-                    done(reason);
-                }
-            });
         });
 
         it('should be able to write a file from a string', function () {
