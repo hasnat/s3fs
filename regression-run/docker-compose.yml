@@ -3,7 +3,6 @@ version: '3.7'
 services:
 
   fake-s3:
-    container_name: fake-s3
     build: fake-s3
     ports:
       - "4566:4566"
@@ -14,13 +13,19 @@ services:
       - HOST_TMP_FOLDER=/tmp/localstack
     tmpfs:
       - /tmp/localstack:exec,mode=600
+    healthcheck:
+      test: awslocal s3api wait bucket-exists --bucket bucket-a && awslocal s3api wait bucket-exists --bucket bucket-b
+
 
   s3fs-tests:
     build:
       context: ../
       dockerfile: ./regression-run/Dockerfile
+      args:
+        NODEJS_VERSION: "${NODEJS_VERSION:-16.3.0}"
     depends_on:
-      - fake-s3
+      fake-s3:
+        condition: service_healthy
     environment:
       AWS_ACCESS_KEY_ID: 'access-key-dont-matter-for-fake-s3'
       AWS_SECRET_KEY: 'secret-key-dont-matter-for-fake-s3'

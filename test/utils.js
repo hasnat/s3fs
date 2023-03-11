@@ -50,6 +50,12 @@
             it('should be able to normalize an absolute path', function () {
                 return expect(fsUtils.normalizePath('/qwerty///asdf.txt')).to.be.equal('/qwerty/asdf.txt');
             });
+            it('should be able not be empty', function () {
+                return expect(fsUtils.normalizePath('/')).to.be.equal('/');
+            });
+            it('should be be empty', function () {
+                return expect(fsUtils.normalizePath('')).to.be.equal('');
+            });
         });
     });
 }(require('chai'), require('chai-as-promised'), require('../lib/utils')));
