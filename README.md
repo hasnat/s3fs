@@ -1,14 +1,7 @@
 # S3FS
-[![npm](https://img.shields.io/npm/v/s3fs.svg)](https://www.npmjs.com/package/s3fs)
-[![npm](https://img.shields.io/npm/dm/s3fs.svg)](https://www.npmjs.com/package/s3fs)
-[![Build Status](https://travis-ci.org/RiptideElements/s3fs.svg?branch=master)](https://travis-ci.org/RiptideElements/s3fs)
-[![Coverage Status](https://img.shields.io/coveralls/RiptideElements/s3fs.svg)](https://coveralls.io/r/RiptideElements/s3fs)
-[![Codacy](https://img.shields.io/codacy/13e0385fd6fc4929a2d1a974c7d0d67f.svg)](https://www.codacy.com/public/davidtpate/s3fs)
-[![Code Climate](https://codeclimate.com/github/RiptideElements/s3fs/badges/gpa.svg)](https://codeclimate.com/github/RiptideElements/s3fs)
-[![David](https://img.shields.io/david/RiptideElements/s3fs.svg)](https://david-dm.org/RiptideElements/s3fs)
-[![David](https://img.shields.io/david/dev/RiptideElements/s3fs.svg)](https://david-dm.org/RiptideElements/s3fs)
-[![David](https://img.shields.io/david/peer/RiptideElements/s3fs.svg)](https://david-dm.org/RiptideElements/s3fs)
-
+```
+npm -i @hasnat/s3fs
+```
 Implementation of Node.JS [FS interface](http://nodejs.org/api/fs.html) using [Amazon Simple Storage Service (S3)](http://aws.amazon.com/s3/) for storage.
 
 **Lead Maintainer**: [David Pate](https://github.com/DavidTPate)
@@ -343,6 +336,18 @@ Lines        : 78.07% ( 356/456 )
 
 Additionally, an interactive HTML report will be generated in `./coverage/lcov-report/index.html` which allows browsing the coverage by file.
 
+
+## Fake s3 + Node versions tests using docker-compose
+This repository uses docker-compose to run tests on multiple node versions, using fake-s3 from localstack
+
+```bash
+docker-compose up --build -d s3fs-fake-s3 
+npm run test
+```
+or run via docker-compose
+```
+docker-compose -f regression-run/docker-compose.yml up s3fs-tests --no-recreate --exit-code-from s3fs-tests
+```
 
 ## License
 [MIT](LICENSE)

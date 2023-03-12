@@ -1,0 +1,25 @@
+
+name: Run Synthetic tests
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: run one version test
+        uses: sudo-bot/action-docker-compose@latest
+        with:
+          cli-args: -f ./regression-run/docker-compose.yml up --build s3fs-tests --exit-code-from s3fs-tests
+      - name: run multiversion test
+        uses: sudo-bot/action-docker-compose@latest
+        with:
+          cli-args: -f ./regression-run/docker-compose.yml up --build s3fs-test-multiple-versions --exit-code-from s3fs-test-multiple-versions
+
