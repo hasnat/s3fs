@@ -337,16 +337,17 @@ Lines        : 78.07% ( 356/456 )
 Additionally, an interactive HTML report will be generated in `./coverage/lcov-report/index.html` which allows browsing the coverage by file.
 
 
-## Node versions tests
-This repository uses [Istanbul](http://gotwarlost.github.io/istanbul/) as its code coverage tool. Code Coverage will be calculated when executing the following command:
+## Fake s3 + Node versions tests using docker-compose
+This repository uses docker-compose to run tests on multiple node versions, using fake-s3 from localstack
 
 ```bash
-cd test 
-./test.sh
+docker-compose up --build -d s3fs-fake-s3 
+npm run test
 ```
-
-This will report the regression output
-
+or run via docker-compose
+```
+docker-compose -f regression-run/docker-compose.yml up s3fs-tests --no-recreate --exit-code-from s3fs-tests
+```
 
 ## License
 [MIT](LICENSE)
