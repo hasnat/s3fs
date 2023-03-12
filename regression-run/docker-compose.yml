@@ -18,6 +18,7 @@ services:
 
 
   s3fs-tests:
+    container_name: "s3fs-tests-node-${NODEJS_VERSION:-16.3.0}"
     build:
       context: ..
       dockerfile: ./regression-run/Dockerfile
@@ -32,7 +33,7 @@ services:
       AWS_SECRET_KEY: 'secret-key-dont-matter-for-fake-s3'
       AWS_ENDPOINT: 'http://s3fs-fake-s3:4566/'
     # defaulting command to unit tests, for multiversion we will use slimmer regression.js
-    command: ${TEST_COMMAND:-npm run test}
+    command: "${TEST_COMMAND:-npm run test}"
 
 
   s3fs-test-multiple-versions:
