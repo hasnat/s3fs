@@ -5,7 +5,7 @@ on:
   push:
     branches: [ "*" ]
   pull_request:
-    branches: [ "disabled" ]
+    branches: [ "*" ]
 
 jobs:
   build:
@@ -18,10 +18,10 @@ jobs:
         uses: sudo-bot/action-docker-compose@latest
         with:
           # https://docs.docker.com/compose/reference/overview/
-          cli-args: -f ./regression-run/docker-compose.yml up --build s3fs-tests
+          cli-args: -f ./regression-run/docker-compose.yml up --build s3fs-tests --exit-code-from s3fs-tests
       - name: run multiversion test
         uses: sudo-bot/action-docker-compose@latest
         with:
           # https://docs.docker.com/compose/reference/overview/
-          cli-args: -f ./regression-run/docker-compose.yml up --build s3fs-test-multiple-versions
+          cli-args: -f ./regression-run/docker-compose.yml up --build s3fs-test-multiple-versions --exit-code-from s3fs-test-multiple-versions
 
