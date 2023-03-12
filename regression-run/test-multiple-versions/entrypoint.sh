@@ -8,7 +8,7 @@ function cleanup()
 {
     exit_status=$?
     echo "exit was $exit_status"
-    docker-compose down || true
+    docker-compose -f regression-run/docker-compose.yml down || true
     exit "$exit_status"
 }
 trap cleanup EXIT
@@ -16,5 +16,5 @@ trap cleanup EXIT
 for NODEJS_VERSION in $NODEJS_VERSIONS_TO_TEST
 do
     export NODEJS_VERSION="${NODEJS_VERSION}"
-    docker-compose up --build --exit-code-from s3fs-tests
+    docker-compose -f regression-run/docker-compose.yml up --build --exit-code-from s3fs-tests
 done

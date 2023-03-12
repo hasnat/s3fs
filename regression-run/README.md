@@ -5,12 +5,11 @@ Docker Compose is used to build and deploy a test environment.
 test.sh waits on tests exit code.
 ## Run tests
 ```
-docker-compose up -d fake-s3
-docker-compose up s3fs-tests
+docker-compose -f regression-run/docker-compose.yml up -d fake-s3
+docker-compose -f regression-run/docker-compose.yml up s3fs-tests
 ```
 
-## Run tests
+## Run multiple versions test
 ```
-cd tests
-./tests.sh
+./regression-run/test-multiple-versions.sh
 ```

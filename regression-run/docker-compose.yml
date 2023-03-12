@@ -19,7 +19,7 @@ services:
 
   s3fs-tests:
     build:
-      context: ../
+      context: .
       dockerfile: ./regression-run/Dockerfile
       args:
         NODEJS_VERSION: "${NODEJS_VERSION:-16.3.0}"
@@ -30,3 +30,12 @@ services:
       AWS_ACCESS_KEY_ID: 'access-key-dont-matter-for-fake-s3'
       AWS_SECRET_KEY: 'secret-key-dont-matter-for-fake-s3'
       AWS_ENDPOINT: 'http://fake-s3:4566/'
+
+
+
+  s3fs-test-multiple-versions:
+    build:
+      context: .
+      dockerfile: ./test-multiple-versions/Dockerfile
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
