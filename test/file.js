@@ -61,7 +61,10 @@
 
         it('should be able to write a large file', function () {
             var largeFile = fs.readFileSync('./test/mock/large-file.txt');
-            return expect(bucketS3fsImpl.writeFile('write-large.txt', largeFile)).to.eventually.be.fulfilled();
+            return expect(bucketS3fsImpl.writeFile('write-large.txt', largeFile)).to.eventually.satisfy(function (data) {
+                expect(!!data.ETag).to.equal(true);
+                return true;
+            });
         });
 
         it('should be able to write a file with encoding', function () {

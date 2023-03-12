@@ -2,11 +2,11 @@ version: '3.7'
 
 services:
 
-  fake-s3:
+  s3fs-fake-s3:
     build: fake-s3
     ports:
       - "4566:4566"
-      - "8080:8080"
+#      - "8080:8080"
     environment:
       - SERVICES=s3
       - PORT_WEB_UI=8080
@@ -23,14 +23,16 @@ services:
       dockerfile: ./regression-run/Dockerfile
       args:
         NODEJS_VERSION: "${NODEJS_VERSION:-16.3.0}"
+        NODE_ENV: "${NODE_ENV:-development}"
     depends_on:
-      fake-s3:
+      s3fs-fake-s3:
         condition: service_healthy
     environment:
       AWS_ACCESS_KEY_ID: 'access-key-dont-matter-for-fake-s3'
       AWS_SECRET_KEY: 'secret-key-dont-matter-for-fake-s3'
-      AWS_ENDPOINT: 'http://fake-s3:4566/'
-
+      AWS_ENDPOINT: 'http://s3fs-fake-s3:4566/'
+    # defaulting command to unit tests, for multiversion we will use slimmer regression.js
+    command: ${TEST_COMMAND:-npm run test}
 
 
   s3fs-test-multiple-versions:
@@ -38,6 +40,8 @@ services:
       context: ..
       dockerfile: ./regression-run/test-multiple-versions/Dockerfile
     environment:
-      NODEJS_VERSIONS_TO_TEST: "19.7.0 18.15.0 17.9.1 16.19.1 15.14.0 14.21.3 13.14.0 12.22.12 11.15.0 10.24.1 9.11.2 8.17.0 7.10.1 6.17.1 5.12.0 4.9.1 0.12.18"
+      NODEJS_VERSIONS_TO_TEST_UNIT: "${NODEJS_VERSIONS_TO_TEST_UNIT:-19.7.0 18.15.0 17.9.1 16.19.1 15.14.0 14.21.3 13.14.0 12.22.12 11.15.0 10.24.1 9.11.2 8.17.0 7.10.1 6.17.1}"
+      NODEJS_VERSIONS_TO_TEST_REGRESSION: "${NODEJS_VERSIONS_TO_TEST_REGRESSION:-19.7.0 18.15.0 17.9.1 16.19.1 15.14.0 14.21.3 13.14.0 12.22.12 11.15.0 10.24.1 9.11.2 8.17.0 7.10.1 6.17.1}"
+      NODEJS_VERSIONS_TO_TEST_UNTESTED: "${NODEJS_VERSIONS_TO_TEST_UNTESTED:- 5.12.0 4.9.1 0.12.18}"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"

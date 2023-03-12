@@ -4,5 +4,6 @@ WORKDIR /usr/local/src/s3fs
 COPY . .
 COPY --from=docker /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/docker-compose
 COPY ./regression-run/test-multiple-versions/entrypoint.sh /entrypoint.sh
+
 ENTRYPOINT /entrypoint.sh
 
